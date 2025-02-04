@@ -1,4 +1,4 @@
-![Banner](misc\dream-team-challenge.webp)
+![Banner](images/dream-team-challenge.png)
 
 Welcome to Dream Team Challenge. 
 
