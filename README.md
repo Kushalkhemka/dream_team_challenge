@@ -46,7 +46,7 @@ The project demoes multiple bidding strategies for teams to decide how much to b
 1. **Base Strategy**  
     - **Working:** This strategy uses a simple linear regression model to estimate a player's value from key performance metrics (batting average, strike rate, and economy). It then compares the current bid with the estimated value: if the current bid is less than 80% of the estimated value, it increases the bid by 0.2 Cr; otherwise, it may increment by 0.1 Cr with a 30% probability.  
     - **Strengths:** Leverages performance data for dynamic bid adjustments.  
-    - **Weaknesses:** The simplified regression model may not capture all nuances of a player's performance.  
+    - **Weaknesses:** The simplified regression model goes all in with the budgets for a player and also may not capture all nuances of a player's performance.  
     - **Location:** See file `strategies/base.py`
 
 2. **Statistical Strategy**  
