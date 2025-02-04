@@ -8,8 +8,8 @@ def main():
     # Load data for all categories of players
     batsmen = load_players("dataset/batsmen.csv", role="Batsman")
     bowlers = load_players("dataset/bowlers.csv", role="Bowler")
-    allrounders = load_players("dataset/allrounders.csv", role="Allrounder")
-    wicket_keepers = load_players("dataset/wk.csv", role="Wicket-Keeper")
+    allrounders = load_players("dataset/allrounders.csv", role="All-rounder")
+    wicket_keepers = load_players("dataset/wicketkeepers.csv", role="Wicket-Keeper")
 
     # Combine all into one list for auction
     all_players = batsmen + bowlers + allrounders + wicket_keepers
