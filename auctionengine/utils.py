@@ -1,11 +1,28 @@
+"""
+Utility functions for the auction engine.
+
+This module contains utility functions for loading and processing player data.
+"""
+
 import pandas as pd
 from auctionengine.player import Player
 
 def load_players(filepath, role):
+    """
+    Load player data from a CSV file and create Player objects.
+
+    Args:
+        filepath (str): Path to the CSV file containing player data
+        role (str): Player role ('batsman', 'bowler', 'wicketkeeper', 'allrounder')
+
+    Returns:
+        list: List of Player objects created from the CSV data
+    """
     df = pd.read_csv(filepath)
     players = []
 
     for _, row in df.iterrows():
+        # Initialize basic stats that are common for all players
         stats_dict = {
             "matches": int(row.get("Matches", 0)),
             "stars": int(row.get("Stars", 0)),
@@ -13,7 +30,7 @@ def load_players(filepath, role):
             "span": str(row.get("Span", "")),
         }
 
-        # Common batting stats
+        # Add batting stats for batsmen, wicketkeepers, and all-rounders
         if role in ["batsman", "wicketkeeper", "allrounder"]:
             stats_dict.update({
                 "runs": int(row.get("Runs", 0)),
@@ -27,7 +44,7 @@ def load_players(filepath, role):
                 "ducks": int(row.get("Ducks", 0))
             })
 
-        # Bowling stats
+        # Add bowling stats for bowlers and all-rounders
         if role in ["bowler", "allrounder"]:
             stats_dict.update({
                 "wickets": int(row.get("Wkts", 0)),
@@ -38,13 +55,14 @@ def load_players(filepath, role):
                 "five_wickets": int(row.get("5", 0))
             })
 
-        # Wicketkeeper specific stats
+        # Add wicketkeeping stats for wicketkeepers
         if role == "wicketkeeper":
             stats_dict.update({
                 "catches": int(row.get("Ct", 0)),
                 "stumpings": int(row.get("St", 0))
             })
 
+        # Create Player object with all relevant stats and metadata
         player_obj = Player(
             name=row.get("Player"),
             role=role,
