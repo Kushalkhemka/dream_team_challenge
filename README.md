@@ -88,7 +88,7 @@ To install the dependencies, run:
 pip install -r requirements.txt
 ```
 ## 5. Running the Simulation
-After installing the dependencies, to run the simulation, execute the following command:
+After installing the dependencies, to run the simulated auction, execute the following command:
 ```bash
 python auction.py
 ```
