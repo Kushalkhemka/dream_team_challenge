@@ -49,6 +49,5 @@ class Team:
         print(f"Remaining Budget: {self.budget} Cr")
         print(f"Players in Squad ({len(self.players)}):")
         for p in self.players:
-            print(f" • {p.name} ({p.role}) for base {p.base_price} Cr")
+            print(f" • {p.name} ({p.role}) for {p.winning_bid} Cr")
         print("---------------------------\n")
-        

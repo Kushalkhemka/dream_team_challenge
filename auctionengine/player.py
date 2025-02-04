@@ -3,7 +3,7 @@ Player class represents a cricket player in the auction system.
 """
 
 class Player:
-    def __init__(self, name, role, age, nationality, stats, base_price):
+    def __init__(self, name, role, age, nationality, stats, base_price, winning_bid):
         """
         Initialize a new Player instance.
 
@@ -19,8 +19,9 @@ class Player:
         self.role = role
         self.age = age
         self.nationality = nationality
-        self.stats = stats  # Dictionary of relevant stats (batting avg, economy, strike rate, etc.)
+        self.stats = stats
         self.base_price = base_price
+        self.winning_bid = 0.0
 
     def __str__(self):
         """
@@ -30,4 +31,4 @@ class Player:
             str: Player's name and role in format 'name - role'
         """
         return f"{self.name} - {self.role}"
-    
+        

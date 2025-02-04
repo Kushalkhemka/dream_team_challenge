@@ -69,7 +69,8 @@ def load_players(filepath, role):
             age=int(row.get("Age")),
             nationality=row.get("Nationality"),
             stats=stats_dict,
-            base_price=float(row.get("Base Price (Cr)"))
+            base_price=float(row.get("Base Price (Cr)")),
+            winning_bid=0.0
         )
         players.append(player_obj)
 
