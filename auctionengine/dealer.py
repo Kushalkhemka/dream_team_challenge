@@ -57,7 +57,9 @@ class Dealer:
 
         # Finalize the auction for the player
         if highest_bidder:
+            player.winning_bid = current_bid  # Set the winning bid amount
             highest_bidder.add_player(player, current_bid)
             print(f"{highest_bidder.name} wins {player.name} for {current_bid} Cr")
         else:
+            player.winning_bid = 0.0  # No winning bid
             print(f"No bids placed for {player.name}. Player remains unsold.")
