@@ -2,7 +2,7 @@ import pandas as pd
 from auctionengine.dealer import Dealer
 from auctionengine.team import Team
 from auctionengine.utils import load_players
-from strategy import BiddingStrategy
+from strategies.strategy import BiddingStrategy
 
 def main():
     # Load data for all categories of players
