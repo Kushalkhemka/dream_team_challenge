@@ -1,22 +1,42 @@
+"""
+Statistical Bidding Strategy Module
+
+This module implements a statistical approach to bidding in player auctions.
+It uses player statistics and performance metrics to make informed bidding decisions
+while managing a total budget across different player roles.
+
+The strategy considers:
+- Player base prices
+- Performance statistics (batting/bowling averages, economy rates, etc.)
+- Star ratings
+- Budget allocation per player role
+- Current auction dynamics
+"""
+
 import random
 
 class StatisticalBiddingStrategy:
     # A default player combination for a team of maximum 11 players.
     DEFAULT_ROSTER_REQUIREMENTS = {
-    "batsman": 4,
-    "bowler": 4,
-    "allrounder": 2,
-    "wicketkeeper": 1
-}
+        "batsman": 4,
+        "bowler": 4,
+        "allrounder": 2,
+        "wicketkeeper": 1
+    }
+
     def __init__(self, total_budget):
         """
-        total_budget: total capital available (in Cr)
+        Initialize the bidding strategy with a total budget.
+
+        Args:
+            total_budget (float): Total capital available (in Cr)
         """
         self.total_budget = total_budget
 
         # Pull in the default roster requirements.
         roster_requirements = StatisticalBiddingStrategy.DEFAULT_ROSTER_REQUIREMENTS
 
+        # Calculate total number of players needed
         total_players = sum(roster_requirements.values())
 
         # Budget allocation per position: proportionally allocate the budget.
@@ -27,13 +47,18 @@ class StatisticalBiddingStrategy:
 
     def predict_price(self, player):
         """
-        A statistical pricing model. The idea is to start with the player's base price and add:
-          - An adjustment based on performance relative to a baseline
-          - A premium/discount based on the player's 'stars' rating.
-        It assumes that the player object provides:
-          player.base_price     (the player's baseline price)
-          player.stats          (a dictionary with key metrics related to performance)
-          player.role       (a string: 'batsman', 'bowler', 'allrounder', or 'wicketkeeper')
+        Predicts a fair price for a player based on their statistics and performance.
+
+        Args:
+            player: Player object with attributes base_price, stats, and role
+
+        Returns:
+            float: Predicted fair price for the player
+
+        The model considers:
+        - Base price
+        - Performance metrics specific to player role
+        - Star rating premium/discount
         """
         base = player.base_price
         stars = player.stats.get('stars', 5)  # use a default of 5 if not provided.
@@ -70,9 +95,14 @@ class StatisticalBiddingStrategy:
 
     def allowed_bid(self, player, current_bid):
         """
-        Determine the maximum allowed bid for a player using:
-          - The predicted price (statistical value)
-          - The remaining allocated budget for the player's position.
+        Determines the maximum allowed bid for a player based on budget constraints.
+
+        Args:
+            player: Player object with role attribute
+            current_bid (float): Current auction bid
+
+        Returns:
+            float: Maximum allowed bid for the player
         """
         pos = player.role.lower()
         predicted = self.predict_price(player)
@@ -83,11 +113,19 @@ class StatisticalBiddingStrategy:
 
     def decide_bid(self, player, current_bid):
         """
-        Given a player and the auction's current bid, decide how to bid.
-        Strategy details:
-         - If the current bid is less than 80% of the allowed bid, increase by 0.2 Cr.
-         - Otherwise, sometimes add a 0.1 Cr increment if it does not exceed the allowed bid,
-           or hold the bid.
+        Decides whether and how much to bid for a player.
+
+        Args:
+            player: Player object
+            current_bid (float): Current auction bid
+
+        Returns:
+            float: New bid amount or current bid if holding
+
+        Strategy:
+        - Aggressive bidding (0.2 Cr increment) if current bid is below 80% of allowed bid
+        - Conservative bidding (0.1 Cr increment) with 30% probability if below allowed bid
+        - Hold current bid otherwise
         """
         allowed = self.allowed_bid(player, current_bid)
         if current_bid < 0.8 * allowed:
@@ -100,7 +138,11 @@ class StatisticalBiddingStrategy:
 
     def update_spent(self, player, winning_bid):
         """
-        After winning a bid for a player, update the spent budget for that player's position.
+        Updates the spent budget after winning a player bid.
+
+        Args:
+            player: Player object with role attribute
+            winning_bid (float): Winning bid amount
         """
         pos = player.role.lower()
         if pos in self.spent_budget:
@@ -110,13 +152,17 @@ class StatisticalBiddingStrategy:
 
     def evaluate_strategy(self, acquired_players):
         """
-        Evaluates the bidding strategy by calculating:
-         - The total predicted value of acquired players based on our statistical model.
-         - The total spent budget and the spent per position.
-         - The efficiency ratio (total predicted value divided by money spent).
-         
-        acquired_players: list of player objects that were acquired.
-          Each player object should have an attribute 'winning_bid' which was paid to acquire them.
+        Evaluates the effectiveness of the bidding strategy.
+
+        Args:
+            acquired_players (list): List of acquired player objects with winning_bid attributes
+
+        Returns:
+            dict: Evaluation metrics including:
+                - Total predicted value
+                - Total spent budget
+                - Position-wise spending
+                - Efficiency ratio (value/cost)
         """
         total_predicted_value = 0
         total_spent = 0
