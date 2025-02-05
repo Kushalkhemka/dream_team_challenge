@@ -78,10 +78,11 @@ Below is an overview of the repository structure and a brief explanation of key 
 ```
 
 ## 4. Dependencies
-The project is built using Python 3.8+ and depends on the following packages:  
-- pandas  
-- numpy
-- scikit-learn
+The project is built using Python 3.8+ and depends on the following packages:
+- Python 3.12
+- Pandas  
+- Numpy
+- Scikit-learn
 
 To install the dependencies, run:
 ```bash
