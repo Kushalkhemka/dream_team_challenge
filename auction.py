@@ -15,6 +15,8 @@ from strategies.base import BiddingStrategy
 from strategies.statistical import StatisticalBiddingStrategy
 from strategies.mlp_strategy import MLPBiddingStrategy
 from strategies.xgboost_strategy import XGBoostBiddingStrategy
+from strategies.bayesian_ridge import BayesianRidgeBiddingStrategy
+from strategies.random_forest import RandomForestBiddingStrategy
 
 def main():
     """
@@ -32,10 +34,10 @@ def main():
 
     # Initialize team budgets (in millions)
     team_budgets = {
-        "Team A": 25.0,
-        "Team B": 25.0,
-        "Team C": 25.0,
-        "Team D": 25.0
+        "Team A": 40.0,
+        "Team B": 40.0,
+        "Team C": 40.0,
+        "Team D": 40.0
     }
 
     # Set maximum players allowed per team
@@ -50,10 +52,10 @@ def main():
 
     # Assign bidding strategies to teams
     bidding_strategies = {
-        "Team A": MLPBiddingStrategy(),
+        "Team A": RandomForestBiddingStrategy(),
         "Team B": XGBoostBiddingStrategy(),
         "Team C": StatisticalBiddingStrategy(total_budget=team_c.budget),
-        "Team D": BiddingStrategy()
+        "Team D": BayesianRidgeBiddingStrategy(total_budget=team_d.budget)
     }
     
     # Initialize dealer with players, teams and their strategies
