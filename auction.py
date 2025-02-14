@@ -13,6 +13,8 @@ from auctionengine.team import Team
 from auctionengine.utils import load_players
 from strategies.base import BiddingStrategy
 from strategies.statistical import StatisticalBiddingStrategy
+from strategies.mlp_strategy import MLPBiddingStrategy
+from strategies.xgboost_strategy import XGBoostBiddingStrategy
 
 def main():
     """
@@ -48,10 +50,10 @@ def main():
 
     # Assign bidding strategies to teams
     bidding_strategies = {
-        "Team A": BiddingStrategy(),
-        "Team B": BiddingStrategy(),
+        "Team A": MLPBiddingStrategy(),
+        "Team B": XGBoostBiddingStrategy(),
         "Team C": StatisticalBiddingStrategy(total_budget=team_c.budget),
-        "Team D": StatisticalBiddingStrategy(total_budget=team_d.budget)
+        "Team D": BiddingStrategy()
     }
     
     # Initialize dealer with players, teams and their strategies
@@ -63,6 +65,12 @@ def main():
     # Display final team compositions and statistics
     for t in teams:
         t.print_team_summary()
+        total_stars = sum(player.stats.get('stars', 0) for player in t.players)
+        print(f"Total Stars Collected by {t.name}: {total_stars}")
+
+    # Determine the winning team based on total stars
+    winning_team = max(teams, key=lambda team: sum(player.stats.get('stars', 0) for player in team.players))
+    print(f"\nWinning Team: {winning_team.name} with {sum(player.stats.get('stars', 0) for player in winning_team.players)} stars")
 
 if __name__ == "__main__":
     main()
